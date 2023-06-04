@@ -1,0 +1,33 @@
+terminal
+
+hadoop fs -ls
+
+hadoop fs -mkdir wordc
+
+hadoop  fs -ls
+
+hadoop  fs -put inputfile wordc/inputfile
+
+hadoop  fs -ls wordc
+
+hadoop  jar wordc.jar wordc wordc/inputfile wordc/output
+
+Hadoop fs -ls wordc/output
+
+Hadoop fs -cat wordc/output/part-r-0000
+Mongodb
+C drive--program file--server 4.0—bin
+Open cmd=mongod”
+Run
+Open 2nd cmd=mongo
+Run
+Casendra
+
+C drive – data dax folder-------------bin—open cmd
+Type “cassendra”
+Open 2nd cmd=Cqlsh
+Run
+
+Cluster
+Hadoopp jar jarfilname.jar Hadoop/Hadoop/Hadoop
+
