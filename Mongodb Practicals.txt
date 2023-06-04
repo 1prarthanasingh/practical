@@ -1,0 +1,782 @@
+> use birladb
+switched to db birladb
+> db
+birladb
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> db.dropDatabase()
+{ "ok" : 1 }
+> db
+birladb
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use DatascienceDB
+switched to db DatascienceDB
+> db
+DatascienceDB
+> db.createCollection("MyCol")
+{ "ok" : 1 }
+> show dbs
+DatascienceDB  0.000GB
+admin          0.000GB
+config         0.000GB
+local          0.000GB
+> db.dropDatabase()
+{ "dropped" : "DatascienceDB", "ok" : 1 }
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use DatascienceDB
+switched to db DatascienceDB
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> db.createCollection("MyCol")
+{ "ok" : 1 }
+> show dbs
+DatascienceDB  0.000GB
+admin          0.000GB
+config         0.000GB
+local          0.000GB
+> show collections
+MyCol
+> db.bds.insert({}
+... ;
+... )
+uncaught exception: SyntaxError: missing ) after argument list :
+@(shell):2:0
+> db.bds.insert({"Name":"Sachin","Age":23,"City":"Mumbai","Gender":"male"})
+WriteResult({ "nInserted" : 1 })
+> show collections
+MyCol
+bds
+> db.bds.find()
+{ "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"), "Name" : "Sachin", "Age" : 23, "City" : "Mumbai", "Gender" : "male" }
+> db.mycol.find()
+> db.mycol.drop()
+false
+> db.mycol.drop()
+false
+> show collections
+MyCol
+bds
+> db.MyCol.drop()
+true
+> show collections
+bds
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+> db.bds.insert([{"Name":["Sachin","Ramesh","Raj","Virat","Rahul","Age":23,"City":"Mumbai","Gender":"male"})
+...
+...
+> ;}
+uncaught exception: SyntaxError: expected expression, got '}' :
+@(shell):1:0
+>
+>
+>
+>
+> db.bds.insert([
+... {
+... "Name":["Sachin","Ramesh","Raj","Virat","Rahul"],
+... "Age":[23,24,34,45],
+... "City":["Mumbai","Delhi","Kolkatta","Chennai","Thane"],
+... "Gender":["Male","Female"]
+... ]})
+uncaught exception: SyntaxError: missing } after property list :
+@(shell):7:0
+> db.bds.insert([
+... {
+... "Name":["Sachin","Ramesh","Raj","Virat","Rahul"],
+... "Age":[23,24,34,45],
+... "City":["Mumbai","Delhi","Kolkatta","Chennai","Thane"],
+... "Gender":["Male","Female"]
+... },
+... {
+... "Name":["Ramesh","Raj","Rahul"],
+... "Age":[31,23,45,43],
+... "City":["Mumbai","Chennai","Thane"],
+... "Gender":["Male","Female"]
+... }
+... ])
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 2,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+> db.bds.insert(
+... {
+... "Name":["Sachin","Ramesh","Raj","Virat","Rahul"],
+... "Age":[23,24,34,45],
+... "City":["Mumbai","Delhi","Kolkatta","Chennai","Thane"],
+... "Gender":["Male","Female"]
+... })
+WriteResult({ "nInserted" : 1 })
+> db.bds.find()
+{ "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"), "Name" : "Sachin", "Age" : 23, "City" : "Mumbai", "Gender" : "male" }
+{ "_id" : ObjectId("5fd2fd77e5e063ea7c7df3e9"), "Name" : [ "Sachin", "Ramesh", "Raj", "Virat", "Rahul" ], "Age" : [ 23, 24, 34, 45 ], "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ], "Gender" : [ "Male", "Female" ] }
+{ "_id" : ObjectId("5fd2fd77e5e063ea7c7df3ea"), "Name" : [ "Ramesh", "Raj", "Rahul" ], "Age" : [ 31, 23, 45, 43 ], "City" : [ "Mumbai", "Chennai", "Thane" ], "Gender" : [ "Male", "Female" ] }
+{ "_id" : ObjectId("5fd2fda5e5e063ea7c7df3eb"), "Name" : [ "Sachin", "Ramesh", "Raj", "Virat", "Rahul" ], "Age" : [ 23, 24, 34, 45 ], "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ], "Gender" : [ "Male", "Female" ] }
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3e9"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3ea"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : [
+                "Mumbai",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+{
+        "_id" : ObjectId("5fd2fda5e5e063ea7c7df3eb"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+> db.bds.update({"Gender":"Male"},{$set:{"Gender":"Female"}}
+... )
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3e9"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3ea"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : [
+                "Mumbai",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+{
+        "_id" : ObjectId("5fd2fda5e5e063ea7c7df3eb"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+> db.bds.update({"Gender":"Male"},{$set:{"Gender":"Female"}} )
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3e9"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3ea"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : [
+                "Mumbai",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fda5e5e063ea7c7df3eb"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+> db.bds.update({"City":"Thane"},{$set:{"City":"Kalyan"}} )
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3e9"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : "Kalyan",
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3ea"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : [
+                "Mumbai",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fda5e5e063ea7c7df3eb"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+> db.bds.update({"City":"Thane"},{$set:{"City":"Kalyan"}},{multi:true})
+WriteResult({ "nMatched" : 2, "nUpserted" : 0, "nModified" : 2 })
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3e9"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : "Kalyan",
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fd77e5e063ea7c7df3ea"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : "Kalyan",
+        "Gender" : "Female"
+}
+{
+        "_id" : ObjectId("5fd2fda5e5e063ea7c7df3eb"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : "Kalyan",
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+> db.bds.remove({"City":"Kalyan"})
+WriteResult({ "nRemoved" : 3 })
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+> db.bds.remove({"City":"Kalyan"},1)
+WriteResult({ "nRemoved" : 0 })
+> db.bds.insert([ { "Name":["Sachin","Ramesh","Raj","Virat","Rahul"], "Age":[23,24,34,45], "City":["Mumbai","Delhi","Kolkatta","Chennai","Thane"], "Gender":["Male","Female"] }, { "Name":["Ramesh","Raj","Rahul"], "Age":[31,23,45,43], "City":["Mumbai","Chennai","Thane"], "Gender":["Male","Female"] } ])
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 2,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd300eae5e063ea7c7df3ec"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+{
+        "_id" : ObjectId("5fd300eae5e063ea7c7df3ed"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : [
+                "Mumbai",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+
+> db.bds.find({},{"Gender":1,_id:0})
+{ "Gender" : "male" }
+{ "Gender" : [ "Male", "Female" ] }
+{ "Gender" : [ "Male", "Female" ] }
+
+> db.bds.find({},{"City":1,_id:0}).sort({"City":1})
+{ "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ] }
+{ "City" : [ "Mumbai", "Chennai", "Thane" ] }
+{ "City" : "Mumbai" }
+> db.bds.find({},{"City":1,_id:0}).sort({"City":-1})
+{ "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ] }
+{ "City" : [ "Mumbai", "Chennai", "Thane" ] }
+{ "City" : "Mumbai" }
+
+> db.bds.find({},{"City":1,_id:0}).sort({"City":-1})
+{ "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ] }
+{ "City" : [ "Mumbai", "Chennai", "Thane" ] }
+{ "City" : "Mumbai" }
+
+> db.bds.find({},{"City":1,_id:0}).sort({"City":1})
+{ "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ] }
+{ "City" : [ "Mumbai", "Chennai", "Thane" ] }
+{ "City" : "Mumbai" }
+> db.bds.find({},{"City":1,_id:0}).sort({"City":-1})
+{ "City" : [ "Mumbai", "Delhi", "Kolkatta", "Chennai", "Thane" ] }
+{ "City" : [ "Mumbai", "Chennai", "Thane" ] }
+{ "City" : "Mumbai" }
+
+> db.bds.insert({"Name":"Bhushan","Age":23,"City":"Mumbai","Gender":"male"})
+WriteResult({ "nInserted" : 1 })
+> db.bds.insert({"Name":"Dinesh","Age":23,"City":"Mumbai","Gender":"male"})
+WriteResult({ "nInserted" : 1 })
+> db.bds.find({},{"Name":1,_id:0}).sort({"Name":1})
+{ "Name" : "Bhushan" }
+{ "Name" : "Dinesh" }
+{ "Name" : [ "Sachin", "Ramesh", "Raj", "Virat", "Rahul" ] }
+{ "Name" : [ "Ramesh", "Raj", "Rahul" ] }
+{ "Name" : "Sachin" }
+> db.bds.find({},{"Name":1,_id:0}).sort({"Name":-1})
+{ "Name" : [ "Sachin", "Ramesh", "Raj", "Virat", "Rahul" ] }
+{ "Name" : "Sachin" }
+{ "Name" : [ "Ramesh", "Raj", "Rahul" ] }
+{ "Name" : "Dinesh" }
+{ "Name" : "Bhushan" }
+> db.bds.insert({"Name":"Firoz","Age":23,"City":"Mumbai","Gender":"male"})
+WriteResult({ "nInserted" : 1 })
+> db.bds.insert({"Name":"Pankaj","Age":23,"City":"Mumbai","Gender":"male"})
+WriteResult({ "nInserted" : 1 })
+> db.bds.find().pretty()
+{
+        "_id" : ObjectId("5fd2fa0be5e063ea7c7df3e8"),
+        "Name" : "Sachin",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd300eae5e063ea7c7df3ec"),
+        "Name" : [
+                "Sachin",
+                "Ramesh",
+                "Raj",
+                "Virat",
+                "Rahul"
+        ],
+        "Age" : [
+                23,
+                24,
+                34,
+                45
+        ],
+        "City" : [
+                "Mumbai",
+                "Delhi",
+                "Kolkatta",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+{
+        "_id" : ObjectId("5fd300eae5e063ea7c7df3ed"),
+        "Name" : [
+                "Ramesh",
+                "Raj",
+                "Rahul"
+        ],
+        "Age" : [
+                31,
+                23,
+                45,
+                43
+        ],
+        "City" : [
+                "Mumbai",
+                "Chennai",
+                "Thane"
+        ],
+        "Gender" : [
+                "Male",
+                "Female"
+        ]
+}
+{
+        "_id" : ObjectId("5fd302d7e5e063ea7c7df3ee"),
+        "Name" : "Bhushan",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd302e2e5e063ea7c7df3ef"),
+        "Name" : "Dinesh",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd3031de5e063ea7c7df3f0"),
+        "Name" : "Firoz",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+{
+        "_id" : ObjectId("5fd30326e5e063ea7c7df3f1"),
+        "Name" : "Pankaj",
+        "Age" : 23,
+        "City" : "Mumbai",
+        "Gender" : "male"
+}
+> db.bds.find({},{"Name":1,_id:0}).sort({"Name":1})
+{ "Name" : "Bhushan" }
+{ "Name" : "Dinesh" }
+{ "Name" : "Firoz" }
+{ "Name" : "Pankaj" }
+{ "Name" : [ "Sachin", "Ramesh", "Raj", "Virat", "Rahul" ] }
+{ "Name" : [ "Ramesh", "Raj", "Rahul" ] }
+{ "Name" : "Sachin" }
+> db.bds.find({},{"Name":1,_id:0}).sort({"Name":-1})
+{ "Name" : [ "Sachin", "Ramesh", "Raj", "Virat", "Rahul" ] }
+{ "Name" : "Sachin" }
+{ "Name" : [ "Ramesh", "Raj", "Rahul" ] }
+{ "Name" : "Pankaj" }
+{ "Name" : "Firoz" }
+{ "Name" : "Dinesh" }
+{ "Name" : "Bhushan" }
+
+
+
+db.BigData.aggregate({$match:{"$and":[{"Name":{$eq:"Bhushan"}},{"Age":{$eq:34}}]}})
+
+
+
+db.BigData.find({"City":{$eq:"Kalyan"}})
+{ "_id" : ObjectId("645f0137dc92cca3e6773d26"), "Name" : "Ramesh", "Age" : 49, "City" : "Kalyan" }
+{ "_id" : ObjectId("645f0149dc92cca3e6773d27"), "Name" : "Ramesh", "Age" : 49, "City" : "Kalyan", "Gender" : "Male" }
+> db.BigData.find({"City":{$eq:"Kalyan"}})
+{ "_id" : ObjectId("645f0137dc92cca3e6773d26"), "Name" : "Ramesh", "Age" : 49, "City" : "Kalyan" }
+{ "_id" : ObjectId("645f0149dc92cca3e6773d27"), "Name" : "Ramesh", "Age" : 49, "City" : "Kalyan", "
+
+
+
+db.BigData.update({"Name":"Ramesh"},{$set:{"Name":"Virat"}})
+
+db.BigData.update({"Age":49},{$set:{"Age":36}},{multi:true})
+db.BigData.remove({"Name":"Sachin"})
+db.BigData.remove({"Age":36},{multi:true})
+db.BigData.drop()
+db.dropDatabase()
